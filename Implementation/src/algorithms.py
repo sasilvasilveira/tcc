@@ -21,6 +21,6 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.utils import to_categorical
 
 
-class Implementation:
-    def __init__(self) -> None:
-        self.data = None
+class Algorithms:
+    def __init__(self, df: DataFrame) -> None:
+        self.data = df
