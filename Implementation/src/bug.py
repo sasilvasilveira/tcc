@@ -8,7 +8,7 @@ class Bug:
         bug_description: str,
         bug_classification: Classification,
         bug_development_step_identification: str,
-        bug_root_cause: str = ""
+        bug_root_cause: str
     ) -> None:
         self.overview = bug_overview
         self.description = bug_description
