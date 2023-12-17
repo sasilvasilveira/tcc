@@ -33,16 +33,16 @@ class Algorithms:
         Bug instance and added to the self.bug_list
         """
         for _, row in self.data.iterrows():
-            this_overview = row[0]
-            this_development_step_identification = row[1]
-            this_classification = row[2]
-            this_cause = row[3]
-            this_description = row[4]
+            current_bug_overview = row[0]
+            current_bug_development_step_identification = row[1]
+            current_bug_classification = row[2]
+            current_bug_cause = row[3]
+            current_bug_description = row[4]
 
             self.bug_list.append(Bug(
-                this_overview,
-                this_description,
-                this_classification,
-                this_development_step_identification,
-                this_cause
+                current_bug_overview,
+                current_bug_description,
+                current_bug_classification,
+                current_bug_development_step_identification,
+                current_bug_cause
             ))
