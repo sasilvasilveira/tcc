@@ -23,7 +23,11 @@ class CleanDatabase:
         self.cause_column_name = ""
         self.remaining_columns = []
 
-    def classify_bug_category(self):
+    def classify_bug_category(self) -> None:
+        """
+        Replacing the bug categories entries for the ones found
+        at the documentation (ROOT_CAUSE_CLASSIFICATION constant)
+        """
         for item in self.data[self.bug_category_column_name]:
             for key, value in ROOT_CAUSE_CLASSIFICATION.items():
                 for sub_values in value:
@@ -39,7 +43,7 @@ class CleanDatabase:
                             )
                         )
 
-    def drop_unwanted_columns(self):
+    def drop_unwanted_columns(self) -> None:
         """
         Method to remove all columns found at self.columns_to_remove
         from the self.dataframe
@@ -58,7 +62,7 @@ class CleanDatabase:
                 axis=1
             )
     
-    def drop_unwanted_rows(self):
+    def drop_unwanted_rows(self) -> None:
         """
         Method to remove all rows from the self.dataframe where
         its values are different from Classification class instance
@@ -77,7 +81,7 @@ class CleanDatabase:
                 if isinstance(item, str):
                     self.data[column] = self.data[column].replace(item, item.lower())
 
-    def remove_stop_words(self):
+    def remove_stop_words(self) -> None:
         """
         Method to remove all stop words from the database
         """
@@ -96,7 +100,7 @@ class CleanDatabase:
                     )
                 )
 
-    def remove_short_words(self):
+    def remove_short_words(self) -> None:
         """
         Method to remove all words shorter than 2 chars from
         the database
@@ -109,7 +113,7 @@ class CleanDatabase:
                     )
                 )
 
-    def set_columns_classification(self):
+    def set_columns_classification(self) -> None:
         """
         Method to set all columns according to the class's
         classification
@@ -143,13 +147,3 @@ class CleanDatabase:
         self.remove_stop_words()
         self.remove_short_words()
         self.set_columns_classification()
-
-        print('Remaining columns:\n')
-        for column in self.remaining_columns:
-            print(column)
-        print('\n')
-        print(f'Cause column:\n{self.cause_column_name}')
-        print('\n')
-        print(f'Classification column:\n{self.bug_category_column_name}')
-
-        return self.data
