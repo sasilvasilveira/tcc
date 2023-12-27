@@ -13,7 +13,7 @@ def main():
     algorithms = Algorithms(clean_database.data)
     algorithms.create_bug_instance_list()
 
-    algorithms.naive_bayes()
+    algorithms.redes_neurais_recorrentes()
 
 if __name__ == '__main__':
     main()
