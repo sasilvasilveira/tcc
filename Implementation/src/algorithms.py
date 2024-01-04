@@ -7,12 +7,11 @@ from src.bug import Bug
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.metrics import classification_report, accuracy_score, confusion_matrix
-from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
+from sklearn.feature_extraction.text import CountVectorizer
 
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Embedding, LSTM, Dense, GlobalMaxPooling1D, Dropout
+from tensorflow.keras.layers import Embedding, LSTM, Dense
 from tensorflow.keras.utils import to_categorical
-from keras.callbacks import ModelCheckpoint
 
 
 class Algorithms:
@@ -86,9 +85,6 @@ class Algorithms:
         print(f"Size of y_test: {len(y_test)}")
 
         return x_train, x_test, y_train, y_test, index_to_label
-
-    def dummy_fun(self, doc):
-        return doc
 
     def naive_bayes(self):
         x_train, x_test, y_train, y_test = self.create_training_and_testing_sets_NB()
