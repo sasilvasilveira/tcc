@@ -1,6 +1,8 @@
 BUG_CATEGORY_COLUMN_NAME = "Campo personalizado (Categoria do Bug)"
 
 COLUMNS_TO_REMOVE = [
+    'Σ',
+    'Aceite',
     'Ambiente\(s\)',
     'Anexo',
     'Approvers',
@@ -21,6 +23,7 @@ COLUMNS_TO_REMOVE = [
     'Descrição do projeto',
     'Development',
     'Driver de Qualidade',
+    'Estimativa',
     'Flagged',
     'Frequência',
     'ICE Score',
@@ -35,10 +38,13 @@ COLUMNS_TO_REMOVE = [
     'PR Review',
     'Pai',
     'Parent summary',
+    'PM Review',
+    'Previsão',
     'Prioridade',
     'Produto',
     'Pull Requests',
     'Rank',
+    'Razão Trabalhada',
     'Relator',
     'Request Type',
     'Request language',
@@ -57,6 +63,7 @@ COLUMNS_TO_REMOVE = [
     'Tipo de projeto',
     'Tipo de teste',
     'URL',
+    'Versão build',
     'Versão de lançamento',
     'Versão de lançamento',
     'Versão do App',

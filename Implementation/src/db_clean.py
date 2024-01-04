@@ -1,6 +1,6 @@
 import pandas as pd
-import nltk
-nltk.download('stopwords') # to download stopwords corpus
+# import nltk
+# nltk.download('stopwords') # to download stopwords corpus
 
 from nltk.corpus import stopwords
 from pandas import DataFrame
@@ -92,7 +92,7 @@ class CleanDatabase:
 
         for column in self.data.columns:
             if column != self.bug_category_column_name:
-                self.data[column] = self.data[column].apply(
+                self.data[column] = self.data[column].astype(str).apply(
                     lambda x: ' '.join(
                         word for word in x.split() if
                         word not in stop_words
