@@ -81,7 +81,10 @@ class Algorithms:
         index_to_label = {i: label for label, i in label_to_index.items()}
 
         x_data = np.array(
-            [label_to_index[bug.classification.sub_category] for bug in self.bug_list]
+            [
+                label_to_index[bug.classification.sub_category]
+                for bug in self.bug_list
+            ]
         )
         y_data = to_categorical(x_data, num_classes=len(unique_labels))
 
@@ -154,7 +157,11 @@ class Algorithms:
         # Model definition
         model = Sequential()
         model.add(
-            Embedding(input_dim=len(np.unique(x_train)), output_dim=8, input_length=1)
+            Embedding(
+                input_dim=len(np.unique(x_train)),
+                output_dim=8,
+                input_length=1,
+            )
         )
         model.add(LSTM(100))
         model.add(Dense(len(np.unique(x_train)), activation="softmax"))
