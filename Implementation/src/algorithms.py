@@ -42,6 +42,11 @@ class Algorithms:
             )
 
     def create_training_and_testing_sets_NB(self):
+        """
+        Creating training an testing sets for Naive Bayes
+        algorithm
+        """
+
         features = []
         labels = []
 
@@ -62,6 +67,11 @@ class Algorithms:
         return x_train, x_test, y_train, y_test
 
     def create_training_and_testing_sets_RNN(self):
+        """
+        Creating training an testing sets for Recurrent Neural
+        Networks algorithm
+        """
+    
         # Mapping strings to numbers
         unique_labels = list(
             set([c.classification.sub_category for c in self.bug_list])
@@ -87,7 +97,16 @@ class Algorithms:
         return x_train, x_test, y_train, y_test, index_to_label
 
     def naive_bayes(self):
-        x_train, x_test, y_train, y_test = self.create_training_and_testing_sets_NB()
+        """
+        Naive Bayes algorithm
+        """
+
+        (
+            x_train,
+            x_test,
+            y_train,
+            y_test
+        ) = self.create_training_and_testing_sets_NB()
 
         # Vectorizing the features
         vectorizer = CountVectorizer()
@@ -115,7 +134,11 @@ class Algorithms:
         print("Classification Report:")
         print(class_report)
 
-    def redes_neurais_recorrentes(self):
+    def recurrent_neural_networks(self):
+        """
+        Recurrent Neural Networks algorithm
+        """
+
         (
             x_train,
             x_test,

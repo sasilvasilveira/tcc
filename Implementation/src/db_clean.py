@@ -5,7 +5,10 @@ import pandas as pd
 from nltk.corpus import stopwords
 from pandas import DataFrame
 from src.classification import Classification
-from src.constants import COLUMNS_WITH_SAME_WORDS_AS_REMAINING_COLUMNS, ROOT_CAUSE_CLASSIFICATION
+from src.constants import (
+    COLUMNS_WITH_SAME_WORDS_AS_REMAINING_COLUMNS,
+    ROOT_CAUSE_CLASSIFICATION
+)
 
 
 class CleanDatabase:
