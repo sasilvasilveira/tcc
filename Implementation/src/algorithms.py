@@ -1,17 +1,18 @@
 import numpy as np
 from pandas import DataFrame
-
-from src.bug import Bug
-
-
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.metrics import (
+    accuracy_score,
+    classification_report,
+    confusion_matrix,
+)
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import MultinomialNB
-from sklearn.metrics import classification_report, accuracy_score, confusion_matrix
-from sklearn.feature_extraction.text import CountVectorizer
-
+from tensorflow.keras.layers import LSTM, Dense, Embedding
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Embedding, LSTM, Dense
 from tensorflow.keras.utils import to_categorical
+
+from src.bug import Bug
 
 
 class Algorithms:
@@ -71,7 +72,7 @@ class Algorithms:
         Creating training an testing sets for Recurrent Neural
         Networks algorithm
         """
-    
+
         # Mapping strings to numbers
         unique_labels = list(
             set([c.classification.sub_category for c in self.bug_list])
@@ -86,7 +87,10 @@ class Algorithms:
 
         # Splitting the data between test and training sets
         x_train, x_test, y_train, y_test = train_test_split(
-            np.expand_dims(x_data, axis=-1), y_data, test_size=0.2, random_state=42
+            np.expand_dims(x_data, axis=-1),
+            y_data,
+            test_size=0.2,
+            random_state=42,
         )
 
         print(f"Size of x_train: {len(x_train)}")
@@ -105,7 +109,7 @@ class Algorithms:
             x_train,
             x_test,
             y_train,
-            y_test
+            y_test,
         ) = self.create_training_and_testing_sets_NB()
 
         # Vectorizing the features
@@ -157,7 +161,9 @@ class Algorithms:
 
         # Model Compilation
         model.compile(
-            optimizer="adam", loss="categorical_crossentropy", metrics=["accuracy"]
+            optimizer="adam",
+            loss="categorical_crossentropy",
+            metrics=["accuracy"],
         )
 
         # Model training
