@@ -12,8 +12,10 @@ def main():
     algorithms = Algorithms(clean_database.data)
     algorithms.create_bug_instance_list()
 
-    algorithms.naive_bayes()
-    algorithms.recurrent_neural_networks()
+    # algorithms.naive_bayes()
+    # algorithms.naive_bayes_kfold()
+    # algorithms.recurrent_neural_networks()
+    # algorithms.recurrent_neural_networks_kfold()
 
 
 if __name__ == "__main__":

@@ -122,14 +122,14 @@ class Algorithms:
         x_train = vectorizer.fit_transform(x_train)
         x_test = vectorizer.transform(x_test)
 
-        # Model training
+        # Model definition
         model = MultinomialNB()
         model.fit(x_train, y_train)
 
         # Models testing
         y_pred = model.predict(x_test)
 
-        # Evaluate the model
+        # Model evaluation
         accuracy = accuracy_score(y_test, y_pred)
         print(f"Accuracy: {accuracy}")
 
@@ -144,6 +144,9 @@ class Algorithms:
         print(class_report)
 
     def naive_bayes_kfold(self):
+        """
+        Naive Bayes algorithm with KFold validation method
+        """
         (
             _,
             _,
@@ -153,10 +156,14 @@ class Algorithms:
             labels,
         ) = self.create_training_and_testing_sets_NB()
 
+        # Vectorizing the features
         vectorizer = CountVectorizer()
         features_vectorized = vectorizer.fit_transform(features)
 
+        # Model definition
         model = MultinomialNB()
+
+        # Stratified KFold method
         skf = StratifiedKFold(n_splits=10, shuffle=True, random_state=42)
 
         y_true_all = []
@@ -186,7 +193,7 @@ class Algorithms:
         print("Overall Confusion Matrix:")
         print(overall_confusion_matrix)
 
-        # Classification Report
+        # Overall Classification Report
         overall_class_report = classification_report(y_true_all, y_pred_all)
         print("Overall Classification Report:")
         print(overall_class_report)
@@ -230,7 +237,7 @@ class Algorithms:
         prediction = model.predict(x_test)
         print(prediction)
 
-        # Evaluate the model on the test sets
+        # Model evaluation on the test sets
         evaluation = model.evaluate(x_test, y_test)
         print("Loss:", evaluation[0])
         print("Accuracy:", evaluation[1])
@@ -253,3 +260,74 @@ class Algorithms:
         class_report = classification_report(y_true_labels, y_pred_labels)
         print("Classification Report:")
         print(class_report)
+
+    def recurrent_neural_networks_kfold(self):
+        """
+        Recurrent Neural Networks algorithm with KFold validation method
+        """
+        (
+            x_train,
+            _,
+            y_train,
+            _,
+            index_to_label,
+        ) = self.create_training_and_testing_sets_RNN()
+
+        # Model definition
+        model = Sequential()
+        model.add(
+            Embedding(
+                input_dim=len(np.unique(x_train)),
+                output_dim=8,
+                input_length=1
+            )
+        )
+        model.add(LSTM(100))
+        model.add(Dense(len(np.unique(x_train)), activation="softmax"))
+
+        # Model Compilation
+        model.compile(
+            optimizer="adam",
+            loss="categorical_crossentropy",
+            metrics=["accuracy"],
+        )
+
+        # Stratified KFold method
+        skf = StratifiedKFold(n_splits=10, shuffle=True, random_state=42)
+
+        y_true_all = []
+        y_pred_all = []
+        accuracy_scores = []
+        for train_index, test_index in skf.split(x_train, np.argmax(y_train, axis=1)):
+            x_train_fold, x_val_fold = x_train[train_index], x_train[test_index]
+            y_train_fold, y_val_fold = y_train[train_index], y_train[test_index]
+
+            model.fit(x_train_fold, y_train_fold, epochs=12, batch_size=1, verbose=0)
+
+            y_pred_fold = model.predict(x_val_fold)
+            y_val_classes = np.argmax(y_val_fold, axis=1)
+            y_pred_classes = np.argmax(y_pred_fold, axis=1)
+
+            accuracy_fold = accuracy_score(y_val_classes, y_pred_classes)
+            accuracy_scores.append(accuracy_fold)
+
+            y_true_all.extend(y_val_classes)
+            y_pred_all.extend(y_pred_classes)
+
+        # Mean evaluation of the model
+        mean_accuracy = np.mean(accuracy_scores)
+        print(f"\nMean Accuracy across 10-folds: {mean_accuracy}")
+
+        # Converting the indexes back to their original categories
+        y_true_labels = [index_to_label[i] for i in y_true_all]
+        y_pred_labels = [index_to_label[i] for i in y_pred_all]
+
+        # Overall Confusion Matrix
+        conf_matrix_total = confusion_matrix(y_true_labels, y_pred_labels)
+        print("\nTotal Confusion Matrix:")
+        print(conf_matrix_total)
+
+        # Overall Classification Report
+        class_report_total = classification_report(y_true_labels, y_pred_labels)
+        print("\nTotal Classification Report:")
+        print(class_report_total)
