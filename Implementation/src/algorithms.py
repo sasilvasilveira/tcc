@@ -6,11 +6,15 @@ from sklearn.metrics import (
     classification_report,
     confusion_matrix,
 )
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import (
+    train_test_split,
+    StratifiedKFold,
+)
 from sklearn.naive_bayes import MultinomialNB
 from tensorflow.keras.layers import LSTM, Dense, Embedding
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.utils import to_categorical
+
 
 from src.bug import Bug
 
@@ -50,7 +54,6 @@ class Algorithms:
 
         features = []
         labels = []
-
         for bug in self.bug_list:
             features.append(bug.classification.description)
             labels.append(bug.classification.sub_category)
@@ -65,7 +68,7 @@ class Algorithms:
         print(f"Size of x_test: {len(x_test)}")
         print(f"Size of y_test: {len(y_test)}")
 
-        return x_train, x_test, y_train, y_test
+        return x_train, x_test, y_train, y_test, features, labels
 
     def create_training_and_testing_sets_RNN(self):
         """
@@ -81,10 +84,7 @@ class Algorithms:
         index_to_label = {i: label for label, i in label_to_index.items()}
 
         x_data = np.array(
-            [
-                label_to_index[bug.classification.sub_category]
-                for bug in self.bug_list
-            ]
+            [label_to_index[bug.classification.sub_category] for bug in self.bug_list]
         )
         y_data = to_categorical(x_data, num_classes=len(unique_labels))
 
@@ -113,6 +113,8 @@ class Algorithms:
             x_test,
             y_train,
             y_test,
+            _,
+            _,
         ) = self.create_training_and_testing_sets_NB()
 
         # Vectorizing the features
@@ -140,6 +142,54 @@ class Algorithms:
         class_report = classification_report(y_test, y_pred)
         print("Classification Report:")
         print(class_report)
+
+    def naive_bayes_kfold(self):
+        (
+            _,
+            _,
+            _,
+            _,
+            features,
+            labels,
+        ) = self.create_training_and_testing_sets_NB()
+
+        vectorizer = CountVectorizer()
+        features_vectorized = vectorizer.fit_transform(features)
+
+        model = MultinomialNB()
+        skf = StratifiedKFold(n_splits=10, shuffle=True, random_state=42)
+
+        y_true_all = []
+        y_pred_all = []
+        for train_index, test_index in skf.split(features_vectorized, labels):
+            x_train, x_test = (
+                features_vectorized[train_index],
+                features_vectorized[test_index],
+            )
+            y_train, y_test = (
+                np.array(labels)[train_index],
+                np.array(labels)[test_index],
+            )
+
+            model.fit(x_train, y_train)
+            y_pred = model.predict(x_test)
+
+            y_true_all.extend(y_test)
+            y_pred_all.extend(y_pred)
+
+        # Overall evaluation of the model
+        overall_accuracy = accuracy_score(y_true_all, y_pred_all)
+        print(f"\nOverall Accuracy across 10-folds: {overall_accuracy}\n")
+
+        # Overall Confusion Matrix
+        overall_confusion_matrix = confusion_matrix(y_true_all, y_pred_all)
+        print("Overall Confusion Matrix:")
+        print(overall_confusion_matrix)
+
+        # Classification Report
+        overall_class_report = classification_report(y_true_all, y_pred_all)
+        print("Overall Classification Report:")
+        print(overall_class_report)
 
     def recurrent_neural_networks(self):
         """
