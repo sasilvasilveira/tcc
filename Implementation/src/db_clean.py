@@ -22,8 +22,6 @@ class CleanDatabase:
         self.data = pd.read_csv(csv_file_path)
         self.columns_to_remove = columns_to_remove
         self.bug_category_column_name = bug_category_column_name
-        self.cause_column_name = ""
-        self.remaining_columns = []
 
     def classify_bug_category(self) -> None:
         """
@@ -77,9 +75,7 @@ class CleanDatabase:
         for column in self.data.columns:
             for item in self.data[column]:
                 if isinstance(item, str):
-                    self.data[column] = self.data[column].replace(
-                        item, item.lower()
-                    )
+                    self.data[column] = self.data[column].replace(item, item.lower())
 
     def remove_stop_words(self) -> None:
         """
@@ -111,24 +107,8 @@ class CleanDatabase:
         for column in self.data.columns:
             if column != self.bug_category_column_name:
                 self.data[column] = self.data[column].apply(
-                    lambda x: " ".join(
-                        word for word in x.split() if len(word) > 2
-                    )
+                    lambda x: " ".join(word for word in x.split() if len(word) > 2)
                 )
-
-    def set_columns_classification(self) -> None:
-        """
-        Method to set all columns according to the class's
-        classification
-        """
-        for column in self.data.columns:
-            if ("Causa" not in column) and (
-                self.bug_category_column_name not in column
-            ):
-                self.remaining_columns.append(column)
-            elif "Causa" in column:
-                self.cause_column_name = column
-        self.remaining_columns.sort()
 
     def clean_database_process(self) -> DataFrame:
         """
@@ -149,4 +129,3 @@ class CleanDatabase:
         self.to_lower_case_all_fields()
         self.remove_stop_words()
         self.remove_short_words()
-        self.set_columns_classification()
