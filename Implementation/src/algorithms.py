@@ -1,5 +1,6 @@
 import numpy as np
 from pandas import DataFrame
+from collections import Counter
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics import (
     accuracy_score,
@@ -94,6 +95,7 @@ class Algorithms:
             y_data,
             test_size=0.2,
             random_state=42,
+            stratify=x_data,
         )
 
         print(f"Size of x_train: {len(x_train)}")
@@ -202,7 +204,6 @@ class Algorithms:
         """
         Recurrent Neural Networks algorithm
         """
-
         (
             x_train,
             x_test,
@@ -232,10 +233,6 @@ class Algorithms:
 
         # Model training
         model.fit(x_train, y_train, epochs=12, batch_size=1)
-
-        # Models testing
-        prediction = model.predict(x_test)
-        print(prediction)
 
         # Model evaluation on the test sets
         evaluation = model.evaluate(x_test, y_test)
@@ -276,11 +273,7 @@ class Algorithms:
         # Model definition
         model = Sequential()
         model.add(
-            Embedding(
-                input_dim=len(np.unique(x_train)),
-                output_dim=8,
-                input_length=1
-            )
+            Embedding(input_dim=len(np.unique(x_train)), output_dim=8, input_length=1)
         )
         model.add(LSTM(100))
         model.add(Dense(len(np.unique(x_train)), activation="softmax"))
