@@ -47,7 +47,7 @@ class Algorithms:
                 )
             )
 
-    def create_training_and_testing_sets_NB(self):
+    def create_training_and_testing_sets_NB(self) -> None:
         """
         Creating training an testing sets for Naive Bayes
         algorithm
@@ -71,7 +71,7 @@ class Algorithms:
 
         return x_train, x_test, y_train, y_test, features, labels
 
-    def create_training_and_testing_sets_RNN(self):
+    def create_training_and_testing_sets_RNN(self) -> None:
         """
         Creating training an testing sets for Recurrent Neural
         Networks algorithm
@@ -105,7 +105,7 @@ class Algorithms:
 
         return x_train, x_test, y_train, y_test, index_to_label
 
-    def naive_bayes(self):
+    def naive_bayes(self) -> None:
         """
         Naive Bayes algorithm
         """
@@ -145,7 +145,7 @@ class Algorithms:
         print("Classification Report:")
         print(class_report)
 
-    def naive_bayes_kfold(self):
+    def naive_bayes_kfold(self) -> None:
         """
         Naive Bayes algorithm with KFold validation method
         """
@@ -200,7 +200,7 @@ class Algorithms:
         print("Overall Classification Report:")
         print(overall_class_report)
 
-    def recurrent_neural_networks(self):
+    def recurrent_neural_networks(self) -> None:
         """
         Recurrent Neural Networks algorithm
         """
@@ -258,7 +258,7 @@ class Algorithms:
         print("Classification Report:")
         print(class_report)
 
-    def recurrent_neural_networks_kfold(self):
+    def recurrent_neural_networks_kfold(self) -> None:
         """
         Recurrent Neural Networks algorithm with KFold validation method
         """
